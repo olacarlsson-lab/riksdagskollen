@@ -63,7 +63,7 @@ function App() {
             Riksdags<span style={{ color: 'var(--text-accent)' }}>Kollen</span>
           </h2>
         </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div className="nav-links">
           <button
             className={`btn ${currentView === 'oversikt' ? 'btn-primary' : 'btn-ghost'}`}
             onClick={() => { setCurrentView('oversikt'); setSelectedMember(null); }}

@@ -161,6 +161,11 @@ a:hover {
   align-items: center;
 }
 
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
 /* Layout Utilities */
 .app-container {
   display: flex;
@@ -199,12 +204,69 @@ a:hover {
   grid-column: span 4;
 }
 
+.col-span-3 {
+  grid-column: span 3;
+}
+
 @media (max-width: 1024px) {
+  .col-span-8 {
+    grid-column: span 12;
+  }
+
+  .col-span-6,
+  .col-span-4,
+  .col-span-3 {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 768px) {
 
   .col-span-8,
   .col-span-6,
-  .col-span-4 {
+  .col-span-4,
+  .col-span-3 {
     grid-column: span 12;
+  }
+
+  .glass-nav {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .nav-links {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    justify-content: flex-start;
+  }
+
+  /* Hide scrollbar for nav links */
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .stat-value {
+    font-size: 2.2rem;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
   }
 }
 
