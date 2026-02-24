@@ -227,7 +227,14 @@ const Dashboard = ({ members, votes, onMemberClick, onPartyClick }) => {
                                     }}
                                     className="hover-bg-highlight"
                                 >
-                                    <div className="party-tag" style={{ background: getPartyColor(person.parti) }}>
+                                    <div className="party-tag"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (onPartyClick) onPartyClick(person.parti);
+                                        }}
+                                        style={{ background: getPartyColor(person.parti), cursor: 'pointer' }}
+                                        title={`Visa parti: ${person.parti}`}
+                                    >
                                         {person.parti}
                                     </div>
                                     <div style={{ flex: 1 }}>
@@ -280,7 +287,14 @@ const Dashboard = ({ members, votes, onMemberClick, onPartyClick }) => {
                                     }}
                                     className="hover-bg-highlight"
                                 >
-                                    <div className="party-tag" style={{ background: getPartyColor(person.parti) }}>
+                                    <div className="party-tag"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (onPartyClick) onPartyClick(person.parti);
+                                        }}
+                                        style={{ background: getPartyColor(person.parti), cursor: 'pointer' }}
+                                        title={`Visa parti: ${person.parti}`}
+                                    >
                                         {person.parti}
                                     </div>
                                     <div style={{ flex: 1 }}>
