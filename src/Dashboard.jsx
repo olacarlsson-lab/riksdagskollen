@@ -300,9 +300,12 @@ const Dashboard = ({ members, votes, onMemberClick, onPartyClick }) => {
 
                 {/* Party Motions Overview */}
                 <div className="glass-panel col-span-12" style={{ minHeight: '400px', marginTop: '2rem' }}>
-                    <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <FileText /> Inlämnade Motioner per Parti (Nuvarande Riksmöte)
-                    </h2>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                        <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                            <FileText /> Inlämnade Motioner per Parti (Nuvarande Riksmöte)
+                        </h2>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>*Klicka på ett parti för detaljer</span>
+                    </div>
                     {partyMotions.length === 0 ? (
                         <p style={{ color: 'var(--text-muted)' }}>Hämtar data från Riksdagen...</p>
                     ) : (
@@ -321,7 +324,7 @@ const Dashboard = ({ members, votes, onMemberClick, onPartyClick }) => {
                                     }}
                                     itemStyle={{ color: 'white' }}
                                 />
-                                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                                <Bar dataKey="value" radius={[4, 4, 0, 0]} onClick={(data) => onPartyClick && onPartyClick(data.name)} style={{ cursor: 'pointer' }}>
                                     {partyMotions.map((entry, index) => (
                                         <Cell key={`cell - ${index} `} fill={getPartyColor(entry.name)} />
                                     ))}
