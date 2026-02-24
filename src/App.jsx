@@ -136,13 +136,6 @@ function App() {
       </nav>
 
       <main className="main-content">
-        <header style={{ textAlign: 'center', marginBottom: '3rem', paddingTop: '2rem' }}>
-          <h1>Riksdagens Voteringar & Närvaro</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-            En visuell utforskning av Sveriges riksdag med fokus på närvaro, partilojalitet och demografi, baserat på öppna data.
-          </p>
-        </header>
-
         {loading ? (
           <div className="loader-container">
             <div className="spinner"></div>
@@ -165,6 +158,7 @@ function App() {
       </main>
 
       <footer style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)', fontSize: '0.9rem', borderTop: '1px solid var(--glass-border)', marginTop: 'auto' }}>
+        <p style={{ maxWidth: '600px', margin: '0 auto 1rem auto' }}>En visuell utforskning av Sveriges riksdag med fokus på närvaro, partilojalitet och demografi, baserat på öppna data.</p>
         <p>Källa: All data hämtas från <a href="https://data.riksdagen.se" target="_blank" rel="noreferrer" style={{ color: 'var(--text-main)', textDecoration: 'underline' }}>Sveriges Riksdags öppna data</a>.</p>
       </footer>
     </div>
