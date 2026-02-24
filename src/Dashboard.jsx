@@ -7,7 +7,7 @@ import {
 import { Users, UserX, Flag, Info, FileText, Zap, Calendar as CalendarIcon } from 'lucide-react';
 import Calendar from './Calendar';
 
-const Dashboard = ({ members, votes, onMemberClick }) => {
+const Dashboard = ({ members, votes, onMemberClick, onPartyClick }) => {
     // 0. State for fetching party motions
     const [partyMotions, setPartyMotions] = useState([]);
     const [timePeriod, setTimePeriod] = useState('all');
@@ -113,6 +113,8 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
             });
         });
 
+        let totalValuableVotes = 0;
+        let totalRebelVotes = 0;
         const memberRebels = {};
         filteredVotes.forEach(v => {
             if (!v.intressent_id || v.parti === '-' || v.rost === 'Frånvarande') return; // ignore Vilde and absent
@@ -121,18 +123,24 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
                 memberRebels[v.intressent_id] = { id: v.intressent_id, name: `${v.fornamn} ${v.efternamn} `, parti: v.parti, total: 0, rebelCount: 0 };
             }
             memberRebels[v.intressent_id].total++;
+            totalValuableVotes++;
 
             const majRost = partyMajorities[v.votering_id]?.[v.parti];
             if (majRost && v.rost !== majRost) {
                 memberRebels[v.intressent_id].rebelCount++;
+                totalRebelVotes++;
             }
         });
 
-        return Object.values(memberRebels)
+        const avgLoyalty = totalValuableVotes > 0 ? (((totalValuableVotes - totalRebelVotes) / totalValuableVotes) * 100).toFixed(1) : 0;
+
+        const list = Object.values(memberRebels)
             .map(entry => ({ ...entry, percentage: entry.total > 10 ? (entry.rebelCount / entry.total) * 100 : 0 }))
             .filter(entry => entry.rebelCount > 0)
             .sort((a, b) => b.percentage - a.percentage)
             .slice(0, 10);
+
+        return { list, avgLoyalty };
     }, [filteredVotes]);
 
     // Total active members count
@@ -140,43 +148,6 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
 
     return (
         <div className="dashboard">
-
-            {/* Overview Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
-                <div className="glass-panel" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <div>
-                        <h3 className="stat-label">Totala Ledamöter</h3>
-                        <div className="stat-value">{totalCount}</div>
-                        <p style={{ color: 'var(--text-muted)' }}>Ur Riksdagens Personlista</p>
-                    </div>
-                    <div style={{ background: 'rgba(56, 189, 248, 0.1)', padding: '1rem', borderRadius: '50%' }}>
-                        <Users color="var(--text-accent)" size={32} />
-                    </div>
-                </div>
-
-                <div className="glass-panel" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <div>
-                        <h3 className="stat-label">Voteringar Analyserade</h3>
-                        <div className="stat-value">{filteredVotes.length}</div>
-                        <p style={{ color: 'var(--text-muted)' }}>Datapunkter i valt urval</p>
-                    </div>
-                    <div style={{ background: 'rgba(139, 92, 246, 0.1)', padding: '1rem', borderRadius: '50%' }}>
-                        <Flag color="var(--accent-secondary)" size={32} />
-                    </div>
-                </div>
-
-                <div className="glass-panel" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <div>
-                        <h3 className="stat-label">Lojalitet mot Partilinje</h3>
-                        <div className="stat-value">92%</div>
-                        <p style={{ color: 'var(--text-muted)' }}>Snitt sedan riksmötets start</p>
-                    </div>
-                    <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '1rem', borderRadius: '50%' }}>
-                        <Info color="#10b981" size={32} />
-                    </div>
-                </div>
-            </div>
-
             <div className="grid-dashboard">
 
                 {/* Kalender */}
@@ -188,11 +159,14 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
                 </div>
 
                 {/* Mandatfördelning */}
-                <div className="glass-panel col-span-6" style={{ minHeight: '400px' }}>
-                    <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Users /> Mandatfördelning
-                    </h2>
-                    <ResponsiveContainer width="100%" height={300}>
+                <div className="glass-panel col-span-12">
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                        <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                            <Users /> Mandatfördelning i Riksdagen ({totalCount} Ledamöter)
+                        </h2>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>*Klicka på ett parti för detaljer</span>
+                    </div>
+                    <ResponsiveContainer width="100%" height={200}>
                         <BarChart data={partyStats} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                             <XAxis dataKey="name" stroke="var(--text-muted)" tickLine={false} />
                             <YAxis stroke="var(--text-muted)" tickLine={false} />
@@ -207,7 +181,7 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
                                 }}
                                 itemStyle={{ color: 'white' }}
                             />
-                            <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                            <Bar dataKey="value" radius={[4, 4, 0, 0]} onClick={(data) => onPartyClick && onPartyClick(data.name)} style={{ cursor: 'pointer' }}>
                                 {partyStats.map((entry, index) => (
                                     <Cell key={`cell - ${index} `} fill={getPartyColor(entry.name)} />
                                 ))}
@@ -217,7 +191,7 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
                 </div>
 
                 {/* Top Absence */}
-                <div className="glass-panel col-span-3" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column' }}>
+                <div className="glass-panel col-span-6" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                         <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
                             <UserX /> Frånvaro
@@ -272,21 +246,31 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
                 </div>
 
                 {/* Rebeller */}
-                <div className="glass-panel col-span-3" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column' }}>
-                    <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Zap /> Partirebeller
-                    </h2>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-                        Ledamöter som oftast röstat emot den egna partilinjen i sakfrågor.
-                    </p>
+                <div className="glass-panel col-span-6" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+                        <div>
+                            <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, marginBottom: '0.5rem' }}>
+                                <Zap /> Partirebeller
+                            </h2>
+                            <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>
+                                Ledamöter som oftast röstat emot den egna partilinjen i sakfrågor.
+                            </p>
+                        </div>
+                        <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '0.5rem 1rem', borderRadius: '8px', textAlign: 'center' }}>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.2rem' }}>
+                                Genomsnittlig Partilojalitet
+                            </div>
+                            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#10b981' }}>{rebelStats.avgLoyalty}%</div>
+                        </div>
+                    </div>
 
                     <div style={{ flex: 1, overflowY: 'auto' }}>
-                        {rebelStats.length === 0 ? (
+                        {rebelStats.list.length === 0 ? (
                             <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginTop: '2rem' }}>
                                 Ingen data (eller ingen har gjort revolt).
                             </p>
                         ) : (
-                            rebelStats.map((person, idx) => (
+                            rebelStats.list.map((person, idx) => (
                                 <div key={idx}
                                     onClick={() => onMemberClick && onMemberClick(person.id)}
                                     style={{

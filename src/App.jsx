@@ -9,6 +9,7 @@ import Committees from './Committees';
 import TrendSearch from './TrendSearch';
 import VotesList from './VotesList';
 import Documents from './Documents';
+import Parties from './Parties';
 import { Activity } from 'lucide-react';
 
 function App() {
@@ -17,6 +18,12 @@ function App() {
   const [currentView, setCurrentView] = useState('oversikt');
   const [selectedMember, setSelectedMember] = useState(null);
   const [selectedCommitteeCode, setSelectedCommitteeCode] = useState(null);
+  const [selectedParty, setSelectedParty] = useState(null);
+
+  const navigateToParty = (partyCode) => {
+    setSelectedParty(partyCode);
+    setCurrentView('partier');
+  };
 
   const navigateToMember = (memberId) => {
     const member = data.members.find(m => m.intressent_id === memberId);
@@ -70,6 +77,12 @@ function App() {
             onClick={() => { setCurrentView('oversikt'); setSelectedMember(null); }}
           >
             Översikt
+          </button>
+          <button
+            className={`btn ${currentView === 'partier' ? 'btn-primary' : 'btn-ghost'}`}
+            onClick={() => { setCurrentView('partier'); setSelectedMember(null); }}
+          >
+            Riksdagspartier
           </button>
           <button
             className={`btn ${currentView === 'ledamoter' ? 'btn-primary' : 'btn-ghost'}`}
@@ -137,7 +150,8 @@ function App() {
           </div>
         ) : (
           <>
-            {currentView === 'oversikt' && <Dashboard members={data.members} votes={data.votes} onMemberClick={navigateToMember} />}
+            {currentView === 'oversikt' && <Dashboard members={data.members} votes={data.votes} onMemberClick={navigateToMember} onPartyClick={navigateToParty} />}
+            {currentView === 'partier' && <Parties members={data.members} votes={data.votes} initialParty={selectedParty} onMemberClick={navigateToMember} />}
             {currentView === 'demografi' && <Demographics members={data.members} votes={data.votes} />}
             {currentView === 'ledamoter' && <MembersList members={data.members} votes={data.votes} selectedMember={selectedMember} setSelectedMember={setSelectedMember} onNavigateToCommittee={navigateToCommittee} />}
             {currentView === 'utskott' && <Committees members={data.members} votes={data.votes} onMemberClick={navigateToMember} initialCommitteeCode={selectedCommitteeCode} />}
