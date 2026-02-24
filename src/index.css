@@ -462,3 +462,22 @@ a:hover {
   letter-spacing: 2px;
   font-weight: 500;
 }
+
+/* Visibility Utilities */
+.mobile-only {
+  display: none !important;
+}
+
+.desktop-only {
+  display: flex !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+}

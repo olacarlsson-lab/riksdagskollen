@@ -142,7 +142,7 @@ const CustomBuilder = ({ members = [] }) => {
                     <Filter /> Filtrera och Bygg
                 </h2>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '2rem' }}>
                     <div>
                         <h4 style={{ marginBottom: '0.5rem' }}>Valt Riksmöte (Tidsperiod)</h4>
                         <select
@@ -222,7 +222,7 @@ const CustomBuilder = ({ members = [] }) => {
                             <BarChart2 /> Resultat ({filteredData.length} datapunkter)
                         </h2>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '2rem' }}>
 
                             {/* Total Votes Chart */}
                             <div style={{ minHeight: '300px' }}>

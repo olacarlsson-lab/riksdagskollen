@@ -56,7 +56,7 @@ const Calendar = () => {
                     Inga händelser hittades i ledighetskalendern det här datumet.
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))', gap: '1rem' }}>
                     {events.map((evt, idx) => {
                         const time = evt.klockslag || '';
                         const room = evt.plats || 'Plats ej angiven';

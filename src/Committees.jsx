@@ -77,7 +77,25 @@ const Committees = ({ members, votes, onMemberClick, initialCommitteeCode }) => 
             {/* Committee List (Sidebar) */}
             <div className="glass-panel committee-sidebar">
                 <h2 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Briefcase /> Utskott</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto', flex: 1, paddingRight: '0.5rem' }}>
+
+                <div className="mobile-only" style={{ marginBottom: '1rem' }}>
+                    <select
+                        className="search-input"
+                        value={selectedComm?.code || ''}
+                        onChange={(e) => {
+                            const found = committees.find(c => c.code === e.target.value);
+                            if (found) setSelectedComm(found);
+                        }}
+                        style={{ width: '100%', padding: '0.8rem', background: 'var(--bg-dark)', color: 'white', border: '1px solid var(--glass-border)', borderRadius: '4px' }}
+                    >
+                        <option value="" disabled>Välj ett utskott...</option>
+                        {committees.map((c, i) => (
+                            <option key={i} value={c.code}>{c.name}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="desktop-only" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto', flex: 1, paddingRight: '0.5rem' }}>
                     {committees.length === 0 && <p style={{ color: 'var(--text-muted)' }}>Laddar utskott...</p>}
                     {committees.map((c, i) => (
                         <button
@@ -138,7 +156,7 @@ const Committees = ({ members, votes, onMemberClick, initialCommitteeCode }) => 
                         <div className="glass-panel">
                             <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Users /> Medlemmar</h2>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '1rem' }}>
                                 {selectedComm.members
                                     .sort((a, b) => (sortOrder[a.role] || 99) - (sortOrder[b.role] || 99))
                                     .map((mInfo, idx) => (

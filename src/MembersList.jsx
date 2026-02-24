@@ -58,7 +58,7 @@ const MemberDetail = ({ m, onBack, votes = [], onNavigateToCommittee }) => {
                     <h1 style={{ marginBottom: '0.5rem', fontSize: '2.5rem' }}>{m.tilltalsnamn} {m.efternamn}</h1>
                     <p style={{ color: 'var(--text-muted)', fontSize: '1.25rem', marginBottom: '2rem' }}>{m.status}</p>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: 'var(--radius-sm)' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: 'var(--radius-sm)' }}>
                         <div><h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}><MapPin size={18} /> Valkrets</h4><p style={{ fontSize: '1.1rem', margin: 0 }}>{m.valkrets}</p></div>
                         <div><h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}><Calendar size={18} /> Ålder</h4><p style={{ fontSize: '1.1rem', margin: 0 }}>{age} år (född {m.fodd_ar})</p></div>
                         <div>
@@ -175,7 +175,7 @@ const MembersList = ({ members, votes, selectedMember, setSelectedMember, onNavi
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
                 {filteredMembers.map((m, idx) => (
                     <div
                         key={idx}
