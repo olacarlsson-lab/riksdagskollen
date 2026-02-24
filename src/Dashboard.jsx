@@ -4,7 +4,8 @@ import {
     BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
     PieChart, Pie, Legend
 } from 'recharts';
-import { Users, UserX, Flag, Info, FileText, Zap } from 'lucide-react';
+import { Users, UserX, Flag, Info, FileText, Zap, Calendar as CalendarIcon } from 'lucide-react';
+import Calendar from './Calendar';
 
 const Dashboard = ({ members, votes, onMemberClick }) => {
     // 0. State for fetching party motions
@@ -42,7 +43,7 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
         votes.forEach(v => {
             if (!v.intressent_id) return;
             if (!memberCounts[v.intressent_id]) {
-                memberCounts[v.intressent_id] = { id: v.intressent_id, total: 0, absent: 0, name: `${v.fornamn} ${v.efternamn}`, parti: v.parti };
+                memberCounts[v.intressent_id] = { id: v.intressent_id, total: 0, absent: 0, name: `${v.fornamn} ${v.efternamn} `, parti: v.parti };
             }
             memberCounts[v.intressent_id].total++;
             if (v.rost === 'Frånvarande') {
@@ -98,7 +99,7 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
             if (!v.intressent_id || v.parti === '-' || v.rost === 'Frånvarande') return; // ignore Vilde and absent
 
             if (!memberRebels[v.intressent_id]) {
-                memberRebels[v.intressent_id] = { id: v.intressent_id, name: `${v.fornamn} ${v.efternamn}`, parti: v.parti, total: 0, rebelCount: 0 };
+                memberRebels[v.intressent_id] = { id: v.intressent_id, name: `${v.fornamn} ${v.efternamn} `, parti: v.parti, total: 0, rebelCount: 0 };
             }
             memberRebels[v.intressent_id].total++;
 
@@ -159,6 +160,14 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
 
             <div className="grid-dashboard">
 
+                {/* Kalender */}
+                <div className="glass-panel col-span-12" style={{ marginBottom: '1.5rem' }}>
+                    <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <CalendarIcon /> Riksdagens Kalendarium
+                    </h2>
+                    <Calendar />
+                </div>
+
                 {/* Mandatfördelning */}
                 <div className="glass-panel col-span-6" style={{ minHeight: '400px' }}>
                     <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -181,7 +190,7 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
                             />
                             <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                                 {partyStats.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={getPartyColor(entry.name)} />
+                                    <Cell key={`cell - ${index} `} fill={getPartyColor(entry.name)} />
                                 ))}
                             </Bar>
                         </BarChart>
@@ -299,7 +308,7 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
                                 />
                                 <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                                     {partyMotions.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={getPartyColor(entry.name)} />
+                                        <Cell key={`cell - ${index} `} fill={getPartyColor(entry.name)} />
                                     ))}
                                 </Bar>
                             </BarChart>

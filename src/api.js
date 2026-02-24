@@ -41,8 +41,8 @@ export const fetchMembers = async () => {
   return data.personlista.person;
 };
 
-export const fetchRecentVotings = async () => {
-  const url = `${BASE_URL}/voteringlista/?rm=2024%2F25&sz=10000&utformat=json`;
+export const fetchRecentVotings = async (rm = "2024%2F25") => {
+  const url = `${BASE_URL}/voteringlista/?rm=${rm}&sz=10000&utformat=json`;
   const data = await fetchWithCache(url);
   if (!data.voteringlista || !data.voteringlista.votering) return [];
   return data.voteringlista.votering;
