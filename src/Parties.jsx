@@ -204,21 +204,21 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                     <>
                         {/* Header Stats */}
                         <div className="glass-panel" style={{ borderTop: `4px solid ${getPartyColor(selectedParty.name)}` }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-                                <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
+                                <div style={{ flex: '1 1 250px' }}>
                                     <div className="party-tag" style={{ background: getPartyColor(selectedParty.name), marginBottom: '1rem' }}>
                                         {selectedParty.name}
                                     </div>
-                                    <h1 style={{ marginBottom: '0.5rem', fontSize: '2.5rem' }}>
+                                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', lineHeight: '1.1' }}>
                                         {partyFullNames[selectedParty.name] || selectedParty.name}
                                     </h1>
                                     <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', margin: 0 }}>
                                         {selectedParty.members.length} ledamöter i nuvarande riksdag
                                     </p>
                                 </div>
-                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', flex: '1 1 auto' }}>
                                     {motionCount !== null && (
-                                        <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', textAlign: 'center', minWidth: '120px', border: '1px solid var(--glass-border)' }}>
+                                        <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', textAlign: 'center', flex: '1 1 auto', minWidth: '120px', border: '1px solid var(--glass-border)' }}>
                                             <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
                                                 Motioner 2024/25
                                             </div>

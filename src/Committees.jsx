@@ -138,17 +138,19 @@ const Committees = ({ members, votes, onMemberClick, initialCommitteeCode }) => 
                 {selectedComm ? (
                     <>
                         <div className="glass-panel">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-                                <div>
-                                    <h1 style={{ marginBottom: '0.5rem', fontSize: '2.5rem' }}>{selectedComm.name}</h1>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
+                                <div style={{ flex: '1 1 250px' }}>
+                                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', lineHeight: '1.1' }}>{selectedComm.name}</h1>
                                     <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', margin: 0 }}>Riksdagsorgan ({selectedComm.code})</p>
                                     <p style={{ color: 'var(--text-muted)' }}>{selectedComm.members.length} verksamma ledamöter</p>
                                 </div>
-                                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px', textAlign: 'center', minWidth: '160px', border: '1px solid var(--glass-border)' }}>
-                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                                        <Activity size={16} /> Närvaro i kammaren
+                                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', flex: '1 1 auto' }}>
+                                    <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px', textAlign: 'center', flex: '1 1 auto', minWidth: '160px', border: '1px solid var(--glass-border)' }}>
+                                        <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                            <Activity size={16} /> Närvaro i kammaren
+                                        </div>
+                                        <div style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{commStats?.total > 0 ? `${commStats.presence}%` : '-'}</div>
                                     </div>
-                                    <div style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{commStats?.total > 0 ? `${commStats.presence}%` : '-'}</div>
                                 </div>
                             </div>
                         </div>
