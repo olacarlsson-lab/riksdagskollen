@@ -73,9 +73,9 @@ const Committees = ({ members, votes, onMemberClick, initialCommitteeCode }) => 
     };
 
     return (
-        <div style={{ marginTop: '2rem', display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+        <div className="committee-layout">
             {/* Committee List (Sidebar) */}
-            <div className="glass-panel" style={{ flex: '1 1 300px', alignSelf: 'flex-start', maxHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
+            <div className="glass-panel committee-sidebar">
                 <h2 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Briefcase /> Utskott</h2>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto', flex: 1, paddingRight: '0.5rem' }}>
                     {committees.length === 0 && <p style={{ color: 'var(--text-muted)' }}>Laddar utskott...</p>}
@@ -116,7 +116,7 @@ const Committees = ({ members, votes, onMemberClick, initialCommitteeCode }) => 
             </div>
 
             {/* Committee Details */}
-            <div style={{ flex: '3 1 600px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div className="committee-content">
                 {selectedComm ? (
                     <>
                         <div className="glass-panel">

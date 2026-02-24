@@ -270,6 +270,39 @@ a:hover {
   }
 }
 
+/* Committee Layout */
+.committee-layout {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.committee-sidebar {
+  flex: 1 1 300px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.committee-content {
+  flex: 3 1 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .committee-sidebar {
+    flex: 1 1 100%;
+    max-height: 350px;
+  }
+
+  .committee-content {
+    flex: 1 1 100%;
+  }
+}
+
 /* Search Input field */
 .search-bar {
   display: flex;

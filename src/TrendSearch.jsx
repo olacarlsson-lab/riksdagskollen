@@ -8,6 +8,40 @@ const TrendSearch = () => {
     const [stats, setStats] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchedPhrase, setSearchedPhrase] = useState('');
+    const [trendingWords, setTrendingWords] = useState([]);
+
+    React.useEffect(() => {
+        const fetchTrending = async () => {
+            try {
+                const res = await fetch(`https://data.riksdagen.se/dokumentlista/?rm=2024%2F25&sz=200&utformat=json`);
+                const data = await res.json();
+                if (data?.dokumentlista?.dokument) {
+                    const docs = Array.isArray(data.dokumentlista.dokument) ? data.dokumentlista.dokument : [data.dokumentlista.dokument];
+                    const words = {};
+                    const stopwords = ['och', 'att', 'med', 'för', 'som', 'till', 'har', 'den', 'det', 'inte', 'ska', 'kan', 'eller', 'samt', 'från', 'blir', 'skulle', 'om', 'på', 'av', 'vid', 'inom', 'under', 'mot', 'över', 'mellan', 'genom', 'vilka', 'vilket', 'sådan', 'sådant', 'efter', 'även', 'bör'];
+
+                    docs.forEach(doc => {
+                        const title = (doc.titel || "").toLowerCase().replace(/[^\wåäö]/g, ' ');
+                        title.split(/\s+/).forEach(w => {
+                            if (w.length > 4 && !stopwords.includes(w) && !parseInt(w) && w !== "beslut") {
+                                words[w] = (words[w] || 0) + 1;
+                            }
+                        });
+                    });
+
+                    // Filter and sort top 8
+                    const top = Object.entries(words)
+                        .filter(([w, count]) => count > 1)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 8)
+                        .map(x => x[0].charAt(0).toUpperCase() + x[0].slice(1));
+
+                    setTrendingWords(top);
+                }
+            } catch (e) { }
+        }
+        fetchTrending();
+    }, []);
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -45,32 +79,28 @@ const TrendSearch = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ padding: '0 2rem' }} disabled={loading}>
+                    <button id="trend-search-btn" type="submit" className="btn btn-primary" style={{ padding: '0 2rem' }} disabled={loading}>
                         {loading ? 'Söker...' : 'Analysera'}
                     </button>
                 </form>
 
-                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'flex', alignItems: 'center' }}>Exempelvänliga sökord:</span>
-                    {['Sjukvård', 'Kärnkraft', 'Skola', 'Gängkriminalitet', 'Bensin', 'Integration'].map(word => (
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><TrendingUp size={14} /> Hetaste trendorden just nu:</span>
+                    {trendingWords.length > 0 ? trendingWords.map((word, idx) => (
                         <button
-                            key={word}
-                            onClick={() => setSearchTerm(word)}
-                            style={{
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid var(--glass-border)',
-                                color: 'white',
-                                padding: '0.2rem 0.6rem',
-                                borderRadius: '1rem',
-                                fontSize: '0.85rem',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s ease'
+                            key={idx}
+                            onClick={() => {
+                                setSearchTerm(word);
+                                document.getElementById("trend-search-btn").click();
                             }}
-                            className="hover-bg-highlight"
+                            className="btn btn-ghost hover-bg-highlight"
+                            style={{ padding: '0.2rem 0.6rem', fontSize: '0.8rem', textTransform: 'capitalize' }}
                         >
                             {word}
                         </button>
-                    ))}
+                    )) : (
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Laddar trendord...</span>
+                    )}
                 </div>
             </div>
 
@@ -101,7 +131,7 @@ const TrendSearch = () => {
                     )}
                 </div>
             )}
-        </div>
+        </div >
     );
 };
 

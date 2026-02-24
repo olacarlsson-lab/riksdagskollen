@@ -10,6 +10,25 @@ import Calendar from './Calendar';
 const Dashboard = ({ members, votes, onMemberClick }) => {
     // 0. State for fetching party motions
     const [partyMotions, setPartyMotions] = useState([]);
+    const [timePeriod, setTimePeriod] = useState('all');
+
+    // Filter votes by selected time period
+    const filteredVotes = useMemo(() => {
+        if (timePeriod === 'all' || !votes.length) return votes;
+
+        let latestTimestamp = 0;
+        votes.forEach(v => {
+            const d = new Date(v.datum || v.systemdatum || 0).getTime();
+            if (d > latestTimestamp) latestTimestamp = d;
+        });
+
+        const cutoff = new Date(latestTimestamp);
+        if (timePeriod === '1m') cutoff.setMonth(cutoff.getMonth() - 1);
+        else if (timePeriod === '3m') cutoff.setMonth(cutoff.getMonth() - 3);
+        else if (timePeriod === '1y') cutoff.setFullYear(cutoff.getFullYear() - 1);
+
+        return votes.filter(v => new Date(v.datum || v.systemdatum || 0) >= cutoff);
+    }, [votes, timePeriod]);
 
     useEffect(() => {
         let isMounted = true;
@@ -40,7 +59,7 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
     // 2. Compute "Frånvaro" per member from recent votes
     const absenceStats = useMemo(() => {
         const memberCounts = {};
-        votes.forEach(v => {
+        filteredVotes.forEach(v => {
             if (!v.intressent_id) return;
             if (!memberCounts[v.intressent_id]) {
                 memberCounts[v.intressent_id] = { id: v.intressent_id, total: 0, absent: 0, name: `${v.fornamn} ${v.efternamn} `, parti: v.parti };
@@ -62,12 +81,12 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
             .slice(0, 10); // Top 10
 
         return results;
-    }, [votes]);
+    }, [filteredVotes]);
 
     // 3. Compute "Rebeller" (Vem röstar oftast mot sitt eget partis majoritet)
     const rebelStats = useMemo(() => {
         const voteringar = {};
-        votes.forEach(v => {
+        filteredVotes.forEach(v => {
             if (!v.votering_id) return;
             if (!voteringar[v.votering_id]) voteringar[v.votering_id] = { partyVotes: {}, members: [] };
 
@@ -95,7 +114,7 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
         });
 
         const memberRebels = {};
-        votes.forEach(v => {
+        filteredVotes.forEach(v => {
             if (!v.intressent_id || v.parti === '-' || v.rost === 'Frånvarande') return; // ignore Vilde and absent
 
             if (!memberRebels[v.intressent_id]) {
@@ -114,7 +133,7 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
             .filter(entry => entry.rebelCount > 0)
             .sort((a, b) => b.percentage - a.percentage)
             .slice(0, 10);
-    }, [votes]);
+    }, [filteredVotes]);
 
     // Total active members count
     const totalCount = members.length;
@@ -138,8 +157,8 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
                 <div className="glass-panel" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                     <div>
                         <h3 className="stat-label">Voteringar Analyserade</h3>
-                        <div className="stat-value">{votes.length}</div>
-                        <p style={{ color: 'var(--text-muted)' }}>Datapunkter i senaste urvalet</p>
+                        <div className="stat-value">{filteredVotes.length}</div>
+                        <p style={{ color: 'var(--text-muted)' }}>Datapunkter i valt urval</p>
                     </div>
                     <div style={{ background: 'rgba(139, 92, 246, 0.1)', padding: '1rem', borderRadius: '50%' }}>
                         <Flag color="var(--accent-secondary)" size={32} />
@@ -199,9 +218,21 @@ const Dashboard = ({ members, votes, onMemberClick }) => {
 
                 {/* Top Absence */}
                 <div className="glass-panel col-span-3" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column' }}>
-                    <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <UserX /> Frånvaro
-                    </h2>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                            <UserX /> Frånvaro
+                        </h2>
+                        <select
+                            value={timePeriod}
+                            onChange={(e) => setTimePeriod(e.target.value)}
+                            style={{ background: 'var(--bg-dark)', color: 'white', border: '1px solid var(--glass-border)', padding: '0.2rem 0.5rem', borderRadius: '4px', outline: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
+                        >
+                            <option value="all">Nuvarande RM</option>
+                            <option value="1y">Senaste året</option>
+                            <option value="3m">Senaste 3 mån</option>
+                            <option value="1m">Senaste mån</option>
+                        </select>
+                    </div>
                     <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
                         Baserat på urval av voteringar. Visar högsta andel frånvaro i procent.
                     </p>

@@ -17,7 +17,6 @@ function App() {
   const [currentView, setCurrentView] = useState('oversikt');
   const [selectedMember, setSelectedMember] = useState(null);
   const [selectedCommitteeCode, setSelectedCommitteeCode] = useState(null);
-  const [selectedRm, setSelectedRm] = useState('2024%2F25');
 
   const navigateToMember = (memberId) => {
     const member = data.members.find(m => m.intressent_id === memberId);
@@ -34,11 +33,10 @@ function App() {
 
   useEffect(() => {
     async function loadData() {
-      setLoading(true);
       try {
         const [membersRes, votesRes] = await Promise.all([
           fetchMembers(),
-          fetchRecentVotings(selectedRm)
+          fetchRecentVotings()
         ]);
 
         // Members list comes as Array
@@ -55,7 +53,7 @@ function App() {
     }
 
     loadData();
-  }, [selectedRm]);
+  }, []);
 
   return (
     <div className="app-container">
@@ -65,20 +63,6 @@ function App() {
           <h2 style={{ fontWeight: 800, letterSpacing: '-0.5px' }}>
             Riksdags<span style={{ color: 'var(--text-accent)' }}>Kollen</span>
           </h2>
-          <select
-            className="search-input"
-            style={{ width: 'auto', padding: '0.4rem 2rem 0.4rem 0.8rem', background: 'var(--bg-card)', border: '1px solid var(--glass-border)', borderRadius: '4px', cursor: 'pointer', outline: 'none', marginLeft: '1rem', fontSize: '0.9rem' }}
-            value={selectedRm}
-            onChange={(e) => setSelectedRm(e.target.value)}
-          >
-            <option value="2024%2F25">Riksmöte 2024/25</option>
-            <option value="2023%2F24">Riksmöte 2023/24</option>
-            <option value="2022%2F23">Riksmöte 2022/23</option>
-            <option value="2021%2F22">Riksmöte 2021/22</option>
-            <option value="2020%2F21">Riksmöte 2020/21</option>
-            <option value="2019%2F20">Riksmöte 2019/20</option>
-            <option value="2018%2F19">Riksmöte 2018/19</option>
-          </select>
         </div>
         <div className="nav-links">
           <button
@@ -159,7 +143,7 @@ function App() {
             {currentView === 'utskott' && <Committees members={data.members} votes={data.votes} onMemberClick={navigateToMember} initialCommitteeCode={selectedCommitteeCode} />}
             {currentView === 'trend' && <TrendSearch />}
             {currentView === 'votes' && <VotesList votes={data.votes} />}
-            {currentView === 'dokument' && <Documents rm={selectedRm} />}
+            {currentView === 'dokument' && <Documents />}
             {currentView === 'bygg' && <CustomBuilder members={data.members} />}
             {currentView === 'likhet' && <SimilarityIndex />}
           </>
