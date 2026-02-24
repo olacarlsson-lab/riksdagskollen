@@ -23,6 +23,7 @@ function App() {
   const navigateToParty = (partyCode) => {
     setSelectedParty(partyCode);
     setCurrentView('partier');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const navigateToMember = (memberId) => {
@@ -30,13 +31,19 @@ function App() {
     if (member) {
       setSelectedMember(member);
       setCurrentView('ledamoter');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const navigateToCommittee = (committeeCode) => {
     setSelectedCommitteeCode(committeeCode);
     setCurrentView('utskott');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentView]);
 
   useEffect(() => {
     async function loadData() {
