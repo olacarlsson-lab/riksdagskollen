@@ -119,19 +119,26 @@ const Demographics = ({ members, votes = [] }) => {
                         <MapPin /> Närvaro per Valkrets
                     </h2>
                     {regionStats.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={380}>
-                            <BarChart data={regionStats} margin={{ top: 20, right: 30, left: 0, bottom: 90 }}>
-                                <XAxis dataKey="name" stroke="var(--text-muted)" tickLine={false} angle={-45} textAnchor="end" height={100} interval={0} tick={{ fontSize: 10 }} tickMargin={5} />
-                                <YAxis stroke="var(--text-muted)" tickLine={false} domain={[0, 100]} />
-                                <Tooltip
-                                    cursor={{ fill: 'var(--glass-highlight)' }}
-                                    contentStyle={{ background: 'var(--bg-dark)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: 'var(--radius-sm)' }}
-                                    itemStyle={{ color: 'white' }}
-                                    formatter={(value) => [`${value.toFixed(1)}%`, 'Närvaro']}
-                                />
-                                <Bar dataKey="attendance" fill="#38bdf8" radius={[4, 4, 0, 0]} />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        <div style={{ flex: 1, overflowY: 'auto', maxHeight: '500px', paddingRight: '1rem' }}>
+                            {regionStats.map((r, i) => (
+                                <div key={i} style={{ marginBottom: '1.2rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem', fontSize: '0.9rem' }}>
+                                        <span style={{ color: 'white' }}>{r.name}</span>
+                                        <span style={{ fontWeight: 'bold', color: r.attendance > 90 ? '#10b981' : (r.attendance > 80 ? 'var(--accent-primary)' : 'var(--party-s)') }}>
+                                            {r.attendance.toFixed(1)}%
+                                        </span>
+                                    </div>
+                                    <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                                        <div style={{
+                                            width: `${r.attendance}%`,
+                                            height: '100%',
+                                            background: r.attendance > 90 ? '#10b981' : (r.attendance > 80 ? 'var(--accent-primary)' : 'var(--party-s)'),
+                                            borderRadius: '4px'
+                                        }}></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     ) : (
                         <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Ingen valkretsdata tillgänglig för det aktuella urvalet.</p>
                     )}
