@@ -5,6 +5,7 @@ import { Activity } from 'lucide-react';
 
 const PARTIES = ['S', 'M', 'SD', 'C', 'V', 'KD', 'L', 'MP'];
 const PERIODS = [
+    { label: '2025/26', value: '2025%2F26' },
     { label: '2024/25', value: '2024%2F25' },
     { label: '2023/24', value: '2023%2F24' },
     { label: '2022/23', value: '2022%2F23' }
@@ -107,14 +108,14 @@ const SimilarityIndex = () => {
                     Ett verktyg för att jämföra partiernas politik i praktiken. Om du väljer till exempel Moderaterna (M) som utgångspunkt (ditt basparti), beräknar systemet hur stor procent av alla voteringar under året som övriga partier har röstat på <u>exakt samma förslag</u> (Ja, Nej eller Avstår). Därmed ser du snabbt vilka partier som politiskt överlappar varandra mest.
                 </p>
 
-                <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
-                    <div>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+                    <div style={{ flex: '1 1 160px', minWidth: 0 }}>
                         <h4 style={{ marginBottom: '0.5rem' }}>Riksmöte</h4>
                         <select
                             value={period}
                             onChange={(e) => setPeriod(e.target.value)}
                             style={{
-                                width: '200px', padding: '0.75rem',
+                                width: '100%', padding: '0.75rem',
                                 background: 'transparent', color: 'white',
                                 border: '1px solid var(--glass-border)',
                                 fontFamily: 'inherit', fontSize: '1rem'
@@ -126,13 +127,13 @@ const SimilarityIndex = () => {
                         </select>
                     </div>
 
-                    <div>
+                    <div style={{ flex: '1 1 160px', minWidth: 0 }}>
                         <h4 style={{ marginBottom: '0.5rem' }}>Basparti</h4>
                         <select
                             value={selectedParty}
                             onChange={(e) => setSelectedParty(e.target.value)}
                             style={{
-                                width: '200px', padding: '0.75rem',
+                                width: '100%', padding: '0.75rem',
                                 background: 'transparent', color: 'white',
                                 border: '1px solid var(--glass-border)',
                                 fontFamily: 'inherit', fontSize: '1rem'

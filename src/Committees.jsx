@@ -140,7 +140,7 @@ const Committees = ({ members, votes, onMemberClick, initialCommitteeCode }) => 
                         <div className="glass-panel">
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
                                 <div style={{ flex: '1 1 250px' }}>
-                                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', lineHeight: '1.1' }}>{selectedComm.name}</h1>
+                                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.2rem, 4.5vw, 2.5rem)', lineHeight: '1.1' }}>{selectedComm.name}</h1>
                                     <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', margin: 0 }}>Riksdagsorgan ({selectedComm.code})</p>
                                     <p style={{ color: 'var(--text-muted)' }}>{selectedComm.members.length} verksamma ledamöter</p>
                                 </div>

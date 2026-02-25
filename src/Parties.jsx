@@ -43,7 +43,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
             // Fetch trending words for the party
             const fetchTrendingForParty = async () => {
                 try {
-                    const res = await fetch(`https://data.riksdagen.se/dokumentlista/?rm=2024%2F25&sz=100&parti=${selectedParty.name}&utformat=json`);
+                    const res = await fetch(`https://data.riksdagen.se/dokumentlista/?rm=2025%2F26&sz=100&parti=${selectedParty.name}&utformat=json`);
                     const data = await res.json();
                     if (data?.dokumentlista?.dokument) {
                         const docs = Array.isArray(data.dokumentlista.dokument) ? data.dokumentlista.dokument : [data.dokumentlista.dokument];
@@ -209,7 +209,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                                     <div className="party-tag" style={{ background: getPartyColor(selectedParty.name), marginBottom: '1rem' }}>
                                         {selectedParty.name}
                                     </div>
-                                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', lineHeight: '1.1' }}>
+                                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.2rem, 4.5vw, 2.5rem)', lineHeight: '1.1', overflowWrap: 'break-word' }}>
                                         {partyFullNames[selectedParty.name] || selectedParty.name}
                                     </h1>
                                     <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', margin: 0 }}>
@@ -220,7 +220,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                                     {motionCount !== null && (
                                         <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', textAlign: 'center', flex: '1 1 auto', minWidth: '120px', border: '1px solid var(--glass-border)' }}>
                                             <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                                                Motioner 2024/25
+                                                Motioner 2025/26
                                             </div>
                                             <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{motionCount}</div>
                                         </div>
@@ -229,13 +229,13 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1rem', marginBottom: '1rem' }}>
                             {/* Demografi */}
                             <div className="glass-panel" style={{ flex: 1, padding: '1.5rem', background: 'rgba(255,255,255,0.03)' }}>
                                 <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>
                                     <Users size={20} /> Demografi & Ålder
                                 </h3>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.25rem', marginBottom: '1rem' }}>
                                     <span style={{ color: 'var(--text-muted)' }}>Könsfördelning</span>
                                     <span style={{ fontWeight: 'bold' }}>{partyStats.womenPct}% Kvinnor / {100 - partyStats.womenPct}% Män</span>
                                 </div>
@@ -254,7 +254,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                                 <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>
                                     <Zap size={20} /> Röstprofil & Lojalitet
                                 </h3>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.25rem', marginBottom: '1rem' }}>
                                     <span style={{ color: 'var(--text-muted)' }}>Partilojalitet i sakfrågor</span>
                                     <span style={{ fontWeight: 'bold', color: partyStats.loyalty > 95 ? '#10b981' : (partyStats.loyalty > 90 ? 'var(--accent-primary)' : 'var(--party-s)') }}>
                                         {partyStats.loyalty}%
@@ -289,7 +289,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                             <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <Users /> Partiets Ledamöter
                             </h2>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 250px), 1fr))', gap: '1rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
                                 {selectedParty.members
                                     .sort((a, b) => a.efternamn.localeCompare(b.efternamn))
                                     .map((m, idx) => (

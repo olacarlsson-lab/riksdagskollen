@@ -41,14 +41,14 @@ export const fetchMembers = async () => {
   return data.personlista.person;
 };
 
-export const fetchRecentVotings = async (rm = "2024%2F25") => {
-  const url = `${BASE_URL}/voteringlista/?rm=${rm}&sz=10000&utformat=json`;
+export const fetchRecentVotings = async (rm = "2025%2F26") => {
+  const url = `${BASE_URL}/voteringlista/?rm=${rm}&sz=3000&utformat=json`;
   const data = await fetchWithCache(url);
   if (!data.voteringlista || !data.voteringlista.votering) return [];
   return data.voteringlista.votering;
 };
 
-export const fetchCustomVotings = async (rm = "2024%2F25", size = 2000) => {
+export const fetchCustomVotings = async (rm = "2025%2F26", size = 2000) => {
   const url = `${BASE_URL}/voteringlista/?rm=${rm}&sz=${size}&utformat=json`;
   // Without using cache to always get fresh data if needed, or with cache. Let's use cache.
   const data = await fetchWithCache(url);
@@ -58,7 +58,7 @@ export const fetchCustomVotings = async (rm = "2024%2F25", size = 2000) => {
 
 // --- New Activity APIs ---
 
-export const fetchMemberActivity = async (iid, rm = "2024%2F25") => {
+export const fetchMemberActivity = async (iid, rm = "2025%2F26") => {
   // We can run these calls in parallel for a specific member
   const urls = {
     motions: `${BASE_URL}/dokumentlista/?iid=${iid}&doktyp=mot&rm=${rm}&sz=5&utformat=json`,
@@ -92,7 +92,7 @@ export const fetchMemberActivity = async (iid, rm = "2024%2F25") => {
   }
 };
 
-export const fetchPartyMotions = async (parties, rm = "2024%2F25") => {
+export const fetchPartyMotions = async (parties, rm = "2025%2F26") => {
   // parties is an array: ['S', 'M', 'SD', ...]
   const promises = parties.map(async (party) => {
     const url = `${BASE_URL}/dokumentlista/?parti=${party}&doktyp=mot&rm=${rm}&sz=1&utformat=json`;
@@ -110,7 +110,7 @@ export const fetchPartyMotions = async (parties, rm = "2024%2F25") => {
   return Promise.all(promises);
 };
 
-export const fetchTrendStats = async (keyword, rm = "2024%2F25") => {
+export const fetchTrendStats = async (keyword, rm = "2025%2F26") => {
   const parties = ['S', 'M', 'SD', 'C', 'V', 'KD', 'L', 'MP'];
   const safeWord = encodeURIComponent(keyword);
   const promises = parties.map(async (party) => {

@@ -33,7 +33,7 @@ const MemberDetail = ({ m, onBack, votes = [], onNavigateToCommittee }) => {
     const activeAssignments = uppdrag.filter(u => (!u.tom || new Date(u.tom) > new Date()) && u.typ === "uppdrag" && (u.roll_kod?.includes("utskott") || u.uppgift?.[0]?.includes("utskott")));
 
     const renderExternalLink = (type) => {
-        return `https://www.riksdagen.se/sv/dokument-och-lagar/?debattdag=&dokumenttyp=${type}&dokstat=ansvarsomrade=&inlamnaddatum=&inlamnadrost=&ledamot=${m.intressent_id}&org=&parti=&rm=2024%2F25&sok=`;
+        return `https://www.riksdagen.se/sv/dokument-och-lagar/?debattdag=&dokumenttyp=${type}&dokstat=ansvarsomrade=&inlamnaddatum=&inlamnadrost=&ledamot=${m.intressent_id}&org=&parti=&rm=2025%2F26&sok=`;
     };
 
     return (
@@ -46,16 +46,16 @@ const MemberDetail = ({ m, onBack, votes = [], onNavigateToCommittee }) => {
                 <ChevronLeft size={20} /> Tillbaka till listan
             </button>
 
-            <div className="glass-panel" style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', position: 'relative', marginBottom: '2rem' }}>
+            <div className="glass-panel" style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', position: 'relative', marginBottom: '2rem' }}>
                 <div style={{ width: '8px', height: '100%', position: 'absolute', left: 0, top: 0, background: getPartyColor(m.parti), borderTopLeftRadius: 'var(--radius-md)', borderBottomLeftRadius: 'var(--radius-md)' }}></div>
 
-                <img src={imageUrl} alt={m.sorteringsnamn} style={{ width: '240px', height: '320px', objectFit: 'cover', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)', marginLeft: '1rem' }} />
+                <img src={imageUrl} alt={m.sorteringsnamn} style={{ width: 'min(200px, 35vw)', aspectRatio: '3/4', objectFit: 'cover', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)', marginLeft: '1rem', flexShrink: 0 }} />
 
-                <div style={{ flex: 1, minWidth: '300px' }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="party-tag" style={{ background: getPartyColor(m.parti), display: 'inline-flex', marginBottom: '1rem' }}>
                         {m.parti === '-' ? 'Vilde' : m.parti}
                     </div>
-                    <h1 style={{ marginBottom: '0.5rem', fontSize: '2.5rem' }}>{m.tilltalsnamn} {m.efternamn}</h1>
+                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.4rem, 5vw, 2.5rem)', overflowWrap: 'break-word' }}>{m.tilltalsnamn} {m.efternamn}</h1>
                     <p style={{ color: 'var(--text-muted)', fontSize: '1.25rem', marginBottom: '2rem' }}>{m.status}</p>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: 'var(--radius-sm)' }}>
@@ -73,7 +73,7 @@ const MemberDetail = ({ m, onBack, votes = [], onNavigateToCommittee }) => {
 
             <div className="grid-dashboard">
                 <div className="glass-panel col-span-6" style={{ display: 'flex', flexDirection: 'column' }}>
-                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}><FileText /> Aktivitet (2024/25)</h3>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}><FileText /> Aktivitet (2025/26)</h3>
                     {loadingStats ? <p style={{ color: 'var(--text-muted)' }}>Laddar statistik...</p> : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', flex: 1 }}>
                             <div>
@@ -154,7 +154,7 @@ const MembersList = ({ members, votes, selectedMember, setSelectedMember, onNavi
                         <Users /> Riksdagens Ledamöter
                     </h2>
 
-                    <div style={{ position: 'relative', width: '300px' }}>
+                    <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
                         <Search size={18} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                         <input
                             type="text"

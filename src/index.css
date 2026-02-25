@@ -251,6 +251,10 @@ a:hover {
     padding: 1rem;
   }
 
+  .glass-panel {
+    padding: 1rem;
+  }
+
   h1 {
     font-size: 2rem;
   }
@@ -267,6 +271,15 @@ a:hover {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
     white-space: nowrap;
+  }
+
+  /* Ensure long words don't overflow panels */
+  .glass-panel h1,
+  .glass-panel h2,
+  .glass-panel h3,
+  .glass-panel h4 {
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 }
 
@@ -293,6 +306,10 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+  .committee-layout {
+    gap: 1rem;
+  }
+
   .committee-sidebar {
     flex: 1 1 100%;
     max-height: 350px;
@@ -300,6 +317,7 @@ a:hover {
 
   .committee-content {
     flex: 1 1 100%;
+    gap: 1rem;
   }
 }
 
