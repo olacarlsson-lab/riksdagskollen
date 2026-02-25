@@ -235,7 +235,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                                 <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>
                                     <Users size={20} /> Demografi & Ålder
                                 </h3>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.25rem', marginBottom: '1rem' }}>
                                     <span style={{ color: 'var(--text-muted)' }}>Könsfördelning</span>
                                     <span style={{ fontWeight: 'bold' }}>{partyStats.womenPct}% Kvinnor / {100 - partyStats.womenPct}% Män</span>
                                 </div>
@@ -254,7 +254,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                                 <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>
                                     <Zap size={20} /> Röstprofil & Lojalitet
                                 </h3>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.25rem', marginBottom: '1rem' }}>
                                     <span style={{ color: 'var(--text-muted)' }}>Partilojalitet i sakfrågor</span>
                                     <span style={{ fontWeight: 'bold', color: partyStats.loyalty > 95 ? '#10b981' : (partyStats.loyalty > 90 ? 'var(--accent-primary)' : 'var(--party-s)') }}>
                                         {partyStats.loyalty}%

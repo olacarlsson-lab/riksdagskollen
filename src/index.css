@@ -255,10 +255,6 @@ a:hover {
     padding: 1rem;
   }
 
-  .committee-layout {
-    gap: 1rem;
-  }
-
   h1 {
     font-size: 2rem;
   }
@@ -310,6 +306,10 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+  .committee-layout {
+    gap: 1rem;
+  }
+
   .committee-sidebar {
     flex: 1 1 100%;
     max-height: 350px;
@@ -317,6 +317,7 @@ a:hover {
 
   .committee-content {
     flex: 1 1 100%;
+    gap: 1rem;
   }
 }
 
