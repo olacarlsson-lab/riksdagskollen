@@ -42,7 +42,7 @@ export const fetchMembers = async () => {
 };
 
 export const fetchRecentVotings = async (rm = "2025%2F26") => {
-  const url = `${BASE_URL}/voteringlista/?rm=${rm}&sz=10000&utformat=json`;
+  const url = `${BASE_URL}/voteringlista/?rm=${rm}&sz=3000&utformat=json`;
   const data = await fetchWithCache(url);
   if (!data.voteringlista || !data.voteringlista.votering) return [];
   return data.voteringlista.votering;

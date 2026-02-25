@@ -45,22 +45,38 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentView]);
 
+  const [fetchError, setFetchError] = useState(null);
+
   useEffect(() => {
     async function loadData() {
+      setFetchError(null);
       try {
-        const [membersRes, votesRes] = await Promise.all([
+        const [membersResult, votesResult] = await Promise.allSettled([
           fetchMembers(),
           fetchRecentVotings()
         ]);
 
-        // Members list comes as Array
-        // Filter out those who are not active? "Tjänstgörande riksdagsledamot"
+        const membersRes = membersResult.status === 'fulfilled' ? membersResult.value : [];
+        const votesRes = votesResult.status === 'fulfilled' ? votesResult.value : [];
+
+        if (membersResult.status === 'rejected' && votesResult.status === 'rejected') {
+          setFetchError('Kunde inte hämta data från Riksdagens API. Kontrollera din internetanslutning och försök igen.');
+        } else if (membersResult.status === 'rejected') {
+          setFetchError('Ledamotslistan kunde inte hämtas. En del funktioner kan sakna data.');
+        } else if (votesResult.status === 'rejected') {
+          setFetchError('Röstningslistan kunde inte hämtas. Närvaro- och lojalitetsdata kan saknas.');
+        }
+
+        if (membersResult.status === 'rejected') console.error('fetchMembers failed:', membersResult.reason);
+        if (votesResult.status === 'rejected') console.error('fetchRecentVotings failed:', votesResult.reason);
+
         const activeMembers = membersRes.filter(p => !p.status?.includes('Förutvarande') && p.status?.includes('Tjänstgörande'));
-        const actualMembers = activeMembers.length > 0 ? activeMembers : membersRes; // Fallback if filter is too aggressive
+        const actualMembers = activeMembers.length > 0 ? activeMembers : membersRes;
 
         setData({ members: actualMembers, votes: votesRes });
       } catch (e) {
-        console.error("Failed to fetch API data", e);
+        console.error("Unexpected error loading data", e);
+        setFetchError('Ett oväntat fel uppstod. Ladda om sidan och försök igen.');
       } finally {
         setLoading(false);
       }
@@ -143,6 +159,11 @@ function App() {
       </nav>
 
       <main className="main-content">
+        {fetchError && (
+          <div style={{ background: 'rgba(220, 80, 60, 0.15)', border: '1px solid rgba(220, 80, 60, 0.4)', borderRadius: 'var(--radius-sm)', padding: '1rem 1.5rem', margin: '1rem 0', color: 'var(--text-main)', fontSize: '0.95rem' }}>
+            ⚠️ {fetchError}
+          </div>
+        )}
         {loading ? (
           <div className="loader-container">
             <div className="spinner"></div>
