@@ -3,14 +3,11 @@ import { fetchMembers, fetchRecentVotings } from './api';
 import Dashboard from './Dashboard';
 import CustomBuilder from './CustomBuilder';
 import MembersList from './MembersList';
-import SimilarityIndex from './SimilarityIndex';
 import Demographics from './Demographics';
 import Committees from './Committees';
-import TrendSearch from './TrendSearch';
 import VotesList from './VotesList';
 import Documents from './Documents';
 import Parties from './Parties';
-import Insights from './Insights';
 import { Activity, ChevronDown } from 'lucide-react';
 
 const NavDropdown = ({ label, items, currentView, onNavigate }) => {
@@ -181,17 +178,6 @@ function App() {
           />
 
           <NavDropdown
-            label="Analys"
-            currentView={currentView}
-            onNavigate={navigate}
-            items={[
-              { label: 'Trend-koll', view: 'trend' },
-              { label: 'Likhetsindex', view: 'likhet' },
-              { label: 'Insikter', view: 'insikter' },
-            ]}
-          />
-
-          <NavDropdown
             label="Data"
             currentView={currentView}
             onNavigate={navigate}
@@ -222,12 +208,9 @@ function App() {
             {currentView === 'demografi' && <Demographics members={data.members} votes={data.votes} />}
             {currentView === 'ledamoter' && <MembersList members={data.members} votes={data.votes} selectedMember={selectedMember} setSelectedMember={setSelectedMember} onNavigateToCommittee={navigateToCommittee} />}
             {currentView === 'utskott' && <Committees members={data.members} votes={data.votes} onMemberClick={navigateToMember} initialCommitteeCode={selectedCommitteeCode} />}
-            {currentView === 'trend' && <TrendSearch />}
             {currentView === 'votes' && <VotesList votes={data.votes} />}
             {currentView === 'dokument' && <Documents />}
             {currentView === 'bygg' && <CustomBuilder members={data.members} />}
-            {currentView === 'likhet' && <SimilarityIndex />}
-            {currentView === 'insikter' && <Insights members={data.members} votes={data.votes} />}
           </>
         )}
       </main>
