@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getPartyColor, fetchMemberActivity } from './api';
-import { Search, Users, ChevronLeft, MapPin, Calendar, FileText, MessageSquare, Mic, Briefcase, ExternalLink, Activity, ArrowRight } from 'lucide-react';
+import { Search, Users, ChevronLeft, MapPin, Calendar, FileText, MessageSquare, Mic, Briefcase, ExternalLink, Activity, ArrowRight, Shuffle } from 'lucide-react';
 
 const MemberDetail = ({ m, onBack, votes = [], onNavigateToCommittee }) => {
     const [stats, setStats] = useState(null);
@@ -27,6 +27,31 @@ const MemberDetail = ({ m, onBack, votes = [], onNavigateToCommittee }) => {
     const totalVotes = memberVotes.length;
     const absentVotes = memberVotes.filter(v => v.rost === 'Frånvarande').length;
     const presencePercent = totalVotes > 0 ? (((totalVotes - absentVotes) / totalVotes) * 100).toFixed(1) : 0;
+
+    // Compute deviations from party majority
+    const deviations = (() => {
+        if (m.parti === '-') return [];
+        const partyMap = {};
+        for (const v of votes) {
+            if (v.parti !== '-' && v.rost !== 'Frånvarande') {
+                if (!partyMap[v.votering_id]) partyMap[v.votering_id] = {};
+                const p = partyMap[v.votering_id];
+                if (!p[v.parti]) p[v.parti] = {};
+                p[v.parti][v.rost] = (p[v.parti][v.rost] || 0) + 1;
+            }
+        }
+        const partyMajority = {};
+        for (const [vid, parties] of Object.entries(partyMap)) {
+            const pd = parties[m.parti];
+            if (!pd) continue;
+            const top = Object.entries(pd).sort((a, b) => b[1] - a[1])[0];
+            if (top) partyMajority[vid] = top[0];
+        }
+        return memberVotes
+            .filter(v => v.rost !== 'Frånvarande' && partyMajority[v.votering_id] && v.rost !== partyMajority[v.votering_id])
+            .map(v => ({ ...v, partyRost: partyMajority[v.votering_id] }))
+            .sort((a, b) => new Date(b.systemdatum) - new Date(a.systemdatum));
+    })();
 
     // Parse committee assignments
     const uppdrag = m.personuppdrag?.uppdrag || [];
@@ -130,6 +155,54 @@ const MemberDetail = ({ m, onBack, votes = [], onNavigateToCommittee }) => {
                     </div>
                 </div>
             </div>
+
+            {m.parti !== '-' && (
+                <div className="glass-panel" style={{ marginTop: '2rem' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <Shuffle size={20} /> Partiavvikelser
+                        <span style={{ marginLeft: '0.5rem', fontSize: '0.9rem', fontWeight: 400, color: 'var(--text-muted)' }}>
+                            {deviations.length} registrerade (2025/26)
+                        </span>
+                    </h3>
+                    {deviations.length === 0 ? (
+                        <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>Inga avvikelser från partilinjen i tillgänglig data.</p>
+                    ) : (
+                        <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            {deviations.slice(0, 30).map((v, i) => {
+                                const rostColor = { Ja: '#52c41a', Nej: '#ff4d4f', Avstår: '#fadb14' };
+                                const docUrl = v.dok_id
+                                    ? `https://www.riksdagen.se/sv/dokument-och-lagar/dokument/${v.dok_id.toLowerCase()}/`
+                                    : null;
+                                return (
+                                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', padding: '0.6rem 0.75rem', background: 'rgba(0,0,0,0.2)', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem' }}>
+                                        <span style={{ color: 'var(--text-muted)', flexShrink: 0, minWidth: '6rem' }}>
+                                            {v.systemdatum?.slice(0, 10)}
+                                        </span>
+                                        <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            {v.beteckning}{v.punkt ? ` p.${v.punkt}` : ''}{v.avser ? ` — ${v.avser}` : ''}
+                                        </span>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
+                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>röstade</span>
+                                            <span style={{ background: rostColor[v.rost] || 'gray', color: '#000', borderRadius: '4px', padding: '0.1rem 0.5rem', fontWeight: 600, fontSize: '0.8rem' }}>{v.rost}</span>
+                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>({m.parti}: {v.partyRost})</span>
+                                        </span>
+                                        {docUrl && (
+                                            <a href={docUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--text-muted)', flexShrink: 0 }}>
+                                                <ExternalLink size={14} />
+                                            </a>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                            {deviations.length > 30 && (
+                                <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.5rem' }}>
+                                    Visar 30 av {deviations.length} avvikelser.
+                                </p>
+                            )}
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
