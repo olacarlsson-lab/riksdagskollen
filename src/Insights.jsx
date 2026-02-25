@@ -492,6 +492,9 @@ const VeteranTab = ({ members, votes }) => {
                             <Bar dataKey="lojalitet" name="Partilojalitet %" fill="#10b981" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.75rem' }}>
+                        * Partilösa ledamöter ("Vilde") ingår ej i lojalitetsberäkningarna — partilojalitet är inte tillämpbart utan partitillhörighet.
+                    </p>
                 </div>
             </div>
         </div>
@@ -593,6 +596,9 @@ const GenderTab = ({ members, votes }) => {
                             <Bar dataKey="lojalitet" name="Partilojalitet %" fill="#10b981" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.75rem' }}>
+                        * Partilösa ledamöter ("Vilde") ingår ej i lojalitetsberäkningarna — partilojalitet är inte tillämpbart utan partitillhörighet.
+                    </p>
                 </div>
                 <div className="glass-panel col-span-12">
                     <h3 style={{ marginBottom: '0.5rem' }}>Könsfördelning per parti (sorterat efter andel kvinnor)</h3>
@@ -808,7 +814,7 @@ const LoyaltyTrendTab = () => {
     return (
         <div>
             <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', maxWidth: '800px' }}>
-                Har partipiskan blivit strängare eller lösare? Analyserar genomsnittlig partilojalitet per riksmöte (2022–2026). Baseras på ett urval av 2 000 voteringar per period.
+                Har partipiskan blivit strängare eller lösare? Analyserar genomsnittlig partilojalitet per riksmöte (2022–2026). Baseras på ett urval av 2 000 voteringar per period. Partilösa ledamöter ("Vilde") ingår ej — partilojalitet är inte tillämpbart utan partitillhörighet.
             </p>
             <div style={{ marginBottom: '2rem' }}>
                 <button className="btn btn-primary" onClick={handleFetch} disabled={loading}>
