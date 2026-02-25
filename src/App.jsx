@@ -10,6 +10,7 @@ import TrendSearch from './TrendSearch';
 import VotesList from './VotesList';
 import Documents from './Documents';
 import Parties from './Parties';
+import Insights from './Insights';
 import { Activity } from 'lucide-react';
 
 function App() {
@@ -155,6 +156,12 @@ function App() {
           >
             Likhetsindex
           </button>
+          <button
+            className={`btn ${currentView === 'insikter' ? 'btn-primary' : 'btn-ghost'}`}
+            onClick={() => { setCurrentView('insikter'); setSelectedMember(null); }}
+          >
+            Insikter
+          </button>
         </div>
       </nav>
 
@@ -181,6 +188,7 @@ function App() {
             {currentView === 'dokument' && <Documents />}
             {currentView === 'bygg' && <CustomBuilder members={data.members} />}
             {currentView === 'likhet' && <SimilarityIndex />}
+            {currentView === 'insikter' && <Insights members={data.members} votes={data.votes} />}
           </>
         )}
       </main>
