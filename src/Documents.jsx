@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Loader2, FileText, ExternalLink } from 'lucide-react';
 
-const Documents = ({ rm = "2024%2F25" }) => {
+const Documents = ({ rm = "2025%2F26" }) => {
     const [query, setQuery] = useState('');
     const [doktyp, setDoktyp] = useState('mot'); // Default to motioner
     const [results, setResults] = useState([]);

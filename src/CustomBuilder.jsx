@@ -5,6 +5,7 @@ import { Download, Filter, BarChart2 } from 'lucide-react';
 
 const PARTIES = ['S', 'M', 'SD', 'C', 'V', 'KD', 'L', 'MP', '-'];
 const PERIODS = [
+    { label: '2025/26', value: '2025%2F26' },
     { label: '2024/25', value: '2024%2F25' },
     { label: '2023/24', value: '2023%2F24' },
     { label: '2022/23', value: '2022%2F23' }

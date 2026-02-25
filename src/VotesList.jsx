@@ -49,7 +49,7 @@ const VotesList = ({ votes }) => {
             for (const v of visibleVotes) {
                 if (!newTitles[v.bet]) {
                     try {
-                        const res = await fetch(`https://data.riksdagen.se/dokumentlista/?sok=${v.bet}&rm=2024%2F25&utformat=json`);
+                        const res = await fetch(`https://data.riksdagen.se/dokumentlista/?sok=${v.bet}&rm=2025%2F26&utformat=json`);
                         const data = await res.json();
                         const doc = data.dokumentlista?.dokument?.[0];
                         if (doc) {

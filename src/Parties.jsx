@@ -43,7 +43,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
             // Fetch trending words for the party
             const fetchTrendingForParty = async () => {
                 try {
-                    const res = await fetch(`https://data.riksdagen.se/dokumentlista/?rm=2024%2F25&sz=100&parti=${selectedParty.name}&utformat=json`);
+                    const res = await fetch(`https://data.riksdagen.se/dokumentlista/?rm=2025%2F26&sz=100&parti=${selectedParty.name}&utformat=json`);
                     const data = await res.json();
                     if (data?.dokumentlista?.dokument) {
                         const docs = Array.isArray(data.dokumentlista.dokument) ? data.dokumentlista.dokument : [data.dokumentlista.dokument];
@@ -220,7 +220,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                                     {motionCount !== null && (
                                         <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', textAlign: 'center', flex: '1 1 auto', minWidth: '120px', border: '1px solid var(--glass-border)' }}>
                                             <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                                                Motioner 2024/25
+                                                Motioner 2025/26
                                             </div>
                                             <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{motionCount}</div>
                                         </div>

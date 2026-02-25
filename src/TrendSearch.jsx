@@ -13,7 +13,7 @@ const TrendSearch = () => {
     React.useEffect(() => {
         const fetchTrending = async () => {
             try {
-                const res = await fetch(`https://data.riksdagen.se/dokumentlista/?rm=2024%2F25&sz=200&utformat=json`);
+                const res = await fetch(`https://data.riksdagen.se/dokumentlista/?rm=2025%2F26&sz=200&utformat=json`);
                 const data = await res.json();
                 if (data?.dokumentlista?.dokument) {
                     const docs = Array.isArray(data.dokumentlista.dokument) ? data.dokumentlista.dokument : [data.dokumentlista.dokument];
