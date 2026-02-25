@@ -20,8 +20,8 @@ const NavDropdown = ({ label, items, currentView, onNavigate }) => {
     const handleOutside = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     };
-    document.addEventListener('mousedown', handleOutside);
-    return () => document.removeEventListener('mousedown', handleOutside);
+    document.addEventListener('pointerdown', handleOutside);
+    return () => document.removeEventListener('pointerdown', handleOutside);
   }, [open]);
 
   return (

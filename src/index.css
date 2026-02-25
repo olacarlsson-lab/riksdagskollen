@@ -237,14 +237,8 @@ a:hover {
 
   .nav-links {
     width: 100%;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
+    flex-wrap: wrap;
     justify-content: flex-start;
-  }
-
-  /* Hide scrollbar for nav links */
-  .nav-links::-webkit-scrollbar {
-    display: none;
   }
 
   .main-content {
