@@ -209,7 +209,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                                     <div className="party-tag" style={{ background: getPartyColor(selectedParty.name), marginBottom: '1rem' }}>
                                         {selectedParty.name}
                                     </div>
-                                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', lineHeight: '1.1' }}>
+                                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.2rem, 4.5vw, 2.5rem)', lineHeight: '1.1', overflowWrap: 'break-word' }}>
                                         {partyFullNames[selectedParty.name] || selectedParty.name}
                                     </h1>
                                     <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', margin: 0 }}>
@@ -229,7 +229,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1rem', marginBottom: '1rem' }}>
                             {/* Demografi */}
                             <div className="glass-panel" style={{ flex: 1, padding: '1.5rem', background: 'rgba(255,255,255,0.03)' }}>
                                 <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>
@@ -289,7 +289,7 @@ const Parties = ({ members, votes, onMemberClick, initialParty }) => {
                             <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <Users /> Partiets Ledamöter
                             </h2>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 250px), 1fr))', gap: '1rem' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 200px), 1fr))', gap: '1rem' }}>
                                 {selectedParty.members
                                     .sort((a, b) => a.efternamn.localeCompare(b.efternamn))
                                     .map((m, idx) => (

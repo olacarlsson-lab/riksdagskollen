@@ -131,7 +131,7 @@ const VotesList = ({ votes }) => {
                         <div key={v.id} className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '1.5rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
                                 <div>
-                                    <h3 style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.6rem' }}>
+                                    <h3 style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: 'clamp(1.1rem, 4vw, 1.6rem)', flexWrap: 'wrap' }}>
                                         Betänkande {v.bet} (Punkt {v.punkt})
                                         {passed ?
                                             <span style={{ fontSize: '0.85rem', padding: '0.2rem 0.5rem', background: 'rgba(16, 185, 129, 0.2)', color: '#10b981', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px', textTransform: 'uppercase' }}><Check size={14} /> Bifall</span> :
@@ -153,11 +153,11 @@ const VotesList = ({ votes }) => {
                                     </div>
                                 </div>
 
-                                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.75rem 1rem', borderRadius: '8px', display: 'flex', gap: '1.5rem' }}>
-                                    <div style={{ textAlign: 'center' }}><div style={{ color: '#10b981', fontWeight: 'bold', fontSize: '1.5rem' }}>{v.total['Ja']}</div><div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Ja</div></div>
-                                    <div style={{ textAlign: 'center' }}><div style={{ color: '#ef4444', fontWeight: 'bold', fontSize: '1.5rem' }}>{v.total['Nej']}</div><div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Nej</div></div>
-                                    <div style={{ textAlign: 'center' }}><div style={{ color: 'var(--text-muted)', fontWeight: 'bold', fontSize: '1.5rem' }}>{v.total['Avstår']}</div><div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Avstår</div></div>
-                                    <div style={{ textAlign: 'center' }}><div style={{ color: '#64748b', fontWeight: 'bold', fontSize: '1.5rem' }}>{v.total['Frånvarande']}</div><div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Frånvarande</div></div>
+                                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.75rem 1rem', borderRadius: '8px', display: 'flex', gap: '1rem', flexWrap: 'wrap', flexShrink: 0 }}>
+                                    <div style={{ textAlign: 'center', minWidth: '48px' }}><div style={{ color: '#10b981', fontWeight: 'bold', fontSize: '1.5rem' }}>{v.total['Ja']}</div><div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Ja</div></div>
+                                    <div style={{ textAlign: 'center', minWidth: '48px' }}><div style={{ color: '#ef4444', fontWeight: 'bold', fontSize: '1.5rem' }}>{v.total['Nej']}</div><div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Nej</div></div>
+                                    <div style={{ textAlign: 'center', minWidth: '48px' }}><div style={{ color: 'var(--text-muted)', fontWeight: 'bold', fontSize: '1.5rem' }}>{v.total['Avstår']}</div><div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Avstår</div></div>
+                                    <div style={{ textAlign: 'center', minWidth: '80px' }}><div style={{ color: '#64748b', fontWeight: 'bold', fontSize: '1.5rem' }}>{v.total['Frånvarande']}</div><div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Frånv.</div></div>
                                 </div>
                             </div>
 

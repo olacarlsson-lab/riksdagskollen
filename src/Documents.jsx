@@ -47,7 +47,7 @@ const Documents = ({ rm = "2025%2F26" }) => {
                 </p>
 
                 <form onSubmit={handleSearch} style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', maxWidth: '800px', flexWrap: 'wrap' }}>
-                    <div className="search-bar" style={{ flex: 1, minWidth: '300px' }}>
+                    <div className="search-bar" style={{ flex: 1, minWidth: 0 }}>
                         <Search className="search-icon" size={18} />
                         <input
                             type="text"

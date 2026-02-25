@@ -46,16 +46,16 @@ const MemberDetail = ({ m, onBack, votes = [], onNavigateToCommittee }) => {
                 <ChevronLeft size={20} /> Tillbaka till listan
             </button>
 
-            <div className="glass-panel" style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', position: 'relative', marginBottom: '2rem' }}>
+            <div className="glass-panel" style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', position: 'relative', marginBottom: '2rem' }}>
                 <div style={{ width: '8px', height: '100%', position: 'absolute', left: 0, top: 0, background: getPartyColor(m.parti), borderTopLeftRadius: 'var(--radius-md)', borderBottomLeftRadius: 'var(--radius-md)' }}></div>
 
-                <img src={imageUrl} alt={m.sorteringsnamn} style={{ width: '240px', height: '320px', objectFit: 'cover', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)', marginLeft: '1rem' }} />
+                <img src={imageUrl} alt={m.sorteringsnamn} style={{ width: 'min(200px, 35vw)', aspectRatio: '3/4', objectFit: 'cover', borderRadius: 'var(--radius-sm)', border: '1px solid var(--glass-border)', marginLeft: '1rem', flexShrink: 0 }} />
 
-                <div style={{ flex: 1, minWidth: '300px' }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="party-tag" style={{ background: getPartyColor(m.parti), display: 'inline-flex', marginBottom: '1rem' }}>
                         {m.parti === '-' ? 'Vilde' : m.parti}
                     </div>
-                    <h1 style={{ marginBottom: '0.5rem', fontSize: '2.5rem' }}>{m.tilltalsnamn} {m.efternamn}</h1>
+                    <h1 style={{ marginBottom: '0.5rem', fontSize: 'clamp(1.4rem, 5vw, 2.5rem)', overflowWrap: 'break-word' }}>{m.tilltalsnamn} {m.efternamn}</h1>
                     <p style={{ color: 'var(--text-muted)', fontSize: '1.25rem', marginBottom: '2rem' }}>{m.status}</p>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: 'var(--radius-sm)' }}>
@@ -154,7 +154,7 @@ const MembersList = ({ members, votes, selectedMember, setSelectedMember, onNavi
                         <Users /> Riksdagens Ledamöter
                     </h2>
 
-                    <div style={{ position: 'relative', width: '300px' }}>
+                    <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
                         <Search size={18} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                         <input
                             type="text"
