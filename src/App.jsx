@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { fetchMembers, fetchRecentVotings } from './api';
 import Dashboard from './Dashboard';
 import CustomBuilder from './CustomBuilder';
@@ -11,7 +11,67 @@ import VotesList from './VotesList';
 import Documents from './Documents';
 import Parties from './Parties';
 import Insights from './Insights';
-import { Activity } from 'lucide-react';
+import { Activity, ChevronDown } from 'lucide-react';
+
+const NavDropdown = ({ label, items, currentView, onNavigate }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const isActive = items.some(item => item.view === currentView);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, [open]);
+
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <button
+        className={`btn ${isActive ? 'btn-primary' : 'btn-ghost'}`}
+        onClick={() => setOpen(o => !o)}
+        style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+      >
+        {label}
+        <ChevronDown size={14} style={{ opacity: 0.7, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+      </button>
+      {open && (
+        <div style={{
+          position: 'absolute',
+          top: 'calc(100% + 0.5rem)',
+          left: 0,
+          background: 'var(--bg-darker)',
+          border: '1px solid var(--glass-border)',
+          borderRadius: 'var(--radius-md)',
+          minWidth: '200px',
+          zIndex: 200,
+          overflow: 'hidden',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+        }}>
+          {items.map(({ label: itemLabel, view }) => (
+            <button
+              key={view}
+              className="btn btn-ghost"
+              onClick={() => { onNavigate(view); setOpen(false); }}
+              style={{
+                width: '100%',
+                justifyContent: 'flex-start',
+                borderRadius: 0,
+                borderBottom: '1px solid rgba(255,255,255,0.08)',
+                background: currentView === view ? 'var(--glass-highlight)' : 'transparent',
+                padding: '0.75rem 1.25rem',
+              }}
+            >
+              {itemLabel}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 function App() {
   const [data, setData] = useState({ members: [], votes: [] });
@@ -20,6 +80,11 @@ function App() {
   const [selectedMember, setSelectedMember] = useState(null);
   const [selectedCommitteeCode, setSelectedCommitteeCode] = useState(null);
   const [selectedParty, setSelectedParty] = useState(null);
+
+  const navigate = (view) => {
+    setCurrentView(view);
+    setSelectedMember(null);
+  };
 
   const navigateToParty = (partyCode) => {
     setSelectedParty(partyCode);
@@ -98,70 +163,44 @@ function App() {
         <div className="nav-links">
           <button
             className={`btn ${currentView === 'oversikt' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('oversikt'); setSelectedMember(null); }}
+            onClick={() => navigate('oversikt')}
           >
             Översikt
           </button>
-          <button
-            className={`btn ${currentView === 'partier' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('partier'); setSelectedMember(null); }}
-          >
-            Riksdagspartier
-          </button>
-          <button
-            className={`btn ${currentView === 'ledamoter' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('ledamoter'); setSelectedMember(null); }}
-          >
-            Ledamöter
-          </button>
-          <button
-            className={`btn ${currentView === 'utskott' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('utskott'); setSelectedMember(null); }}
-          >
-            Utskott
-          </button>
-          <button
-            className={`btn ${currentView === 'demografi' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('demografi'); setSelectedMember(null); }}
-          >
-            Demografi
-          </button>
-          <button
-            className={`btn ${currentView === 'trend' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('trend'); setSelectedMember(null); }}
-          >
-            Trend-koll
-          </button>
-          <button
-            className={`btn ${currentView === 'votes' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('votes'); setSelectedMember(null); }}
-          >
-            Voteringar
-          </button>
-          <button
-            className={`btn ${currentView === 'dokument' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('dokument'); setSelectedMember(null); }}
-          >
-            Dokument
-          </button>
-          <button
-            className={`btn ${currentView === 'bygg' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('bygg'); setSelectedMember(null); }}
-          >
-            Data & Export
-          </button>
-          <button
-            className={`btn ${currentView === 'likhet' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('likhet'); setSelectedMember(null); }}
-          >
-            Likhetsindex
-          </button>
-          <button
-            className={`btn ${currentView === 'insikter' ? 'btn-primary' : 'btn-ghost'}`}
-            onClick={() => { setCurrentView('insikter'); setSelectedMember(null); }}
-          >
-            Insikter
-          </button>
+
+          <NavDropdown
+            label="Riksdagen"
+            currentView={currentView}
+            onNavigate={navigate}
+            items={[
+              { label: 'Riksdagspartier', view: 'partier' },
+              { label: 'Ledamöter', view: 'ledamoter' },
+              { label: 'Utskott', view: 'utskott' },
+              { label: 'Demografi', view: 'demografi' },
+            ]}
+          />
+
+          <NavDropdown
+            label="Analys"
+            currentView={currentView}
+            onNavigate={navigate}
+            items={[
+              { label: 'Trend-koll', view: 'trend' },
+              { label: 'Likhetsindex', view: 'likhet' },
+              { label: 'Insikter', view: 'insikter' },
+            ]}
+          />
+
+          <NavDropdown
+            label="Data"
+            currentView={currentView}
+            onNavigate={navigate}
+            items={[
+              { label: 'Voteringar', view: 'votes' },
+              { label: 'Dokument', view: 'dokument' },
+              { label: 'Data & Export', view: 'bygg' },
+            ]}
+          />
         </div>
       </nav>
 
